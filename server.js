@@ -25,9 +25,26 @@ app.get('/song', function(req, res) {
 app.post('/song', function(req, res) {
   console.log('in song post', req.body);
   var song = req.body;
+  var status = 0;
+  var bool = true;
+  for (var i = 0; i < songData.length; i++) {
+    if(songData[i].name === song.songName){
+      bool = false;
+    }
+  }
+  if(bool && song.songName !== ""){
+    songData.push({name: song.songName});
+    status = 200;
+    console.log(songData, 'if');
+  }
+  else{
+    status = 400;
+    console.log(songData , 'else');
+  }
 
-  songData.push({name: song.songName});
-  res.sendStatus(201);
+  // $('.container').append('<p>' + req.body.songName + '</p>');
+  // res.write('<p>' + req.body.songName + '</p>');
+  res.sendStatus(status);
 });
 
 app.listen(3001, function() {
